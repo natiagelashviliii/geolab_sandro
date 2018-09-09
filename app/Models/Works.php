@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Works extends Model
 {
-    protected $fillable = ['title', 'cat_id', 'description', 'file'];
+    protected $fillable = ['title', 'cat_id', 'description', 'file', 'extension'];
 
     public function tags()
     {

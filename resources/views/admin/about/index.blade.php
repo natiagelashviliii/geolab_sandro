@@ -48,7 +48,7 @@
 	    	<button class="waves-effect waves-light btn-small" type="submit">Update</button>
 	    </div>
 	    @if($Data->image)
-	    	<input type="hidden" class="file-names" data-index="0" name="files" value="{{ $Data->image }}">
+	    	<input type="hidden" class="file-names" data-index="0" name="Photos" value="{{ $Data->image }}">
 	    @endif
 	</form>
 	<form class="j-form files-list-form" name="files-list-form" data-index="0" method="post" enctype="multipart/form-data"

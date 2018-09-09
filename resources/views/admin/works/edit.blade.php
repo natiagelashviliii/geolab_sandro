@@ -27,7 +27,13 @@
 	    <div class="clearfix m-top-5">
             <ul class="clearfix files-list files-list-news" data-types="[jpg, png, jpeg, gif, svg]" data-max-files="1"
             data-name="Photos" data-index="0">
-                <li class="files-list-new-file shadow-inset" onclick="_files.selectFiles(this);">
+       			@if($data['work']->file)
+					<li data-file="{{ asset('storage/works') . '/' . $data['work']->file }}">
+						<img src="{{ asset('storage/works') . '/' . $data['work']->file }}">
+						<i class="fa fa-times" aria-hidden="true" onclick="_files.removeFile(this);" title="Delete"></i>
+					</li>
+				@endif
+                <li class="files-list-new-file shadow-inset" onclick="_files.selectFiles(this);" style="@if($data['work']->file) {{'display:none;'}} @endif">
                     <span>
                     	<i class="fa fa-camera-retro" aria-hidden="true"></i>
                     </span>
@@ -36,7 +42,11 @@
             </ul>
         </div>
         <div class="input-field col s12 right-align">
+        	@if($data['work']->file)
+		    	<input type="hidden" class="file-names" data-index="0" name="Photos" value="{{ $data['work']->file }}">
+		    @endif
 	    	<input type="hidden" name="Tags" id="Tags" value="">
+	    	<input type="hidden" name="WorkID" value="{{ $data['work']->id }}">
 	    	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	    	<button class="waves-effect waves-light btn-small" type="submit">Save</button>
 	    </div>
@@ -55,7 +65,6 @@
 @section('sub_footer')
 <script type="text/javascript">
 	$(document).ready(function(){
-		console.log({!! $data['usedTags'] !!});
 		$('.chips-autocomplete').chips({
 			data: {!! $data['usedTags'] !!},
 			autocompleteOptions: {
@@ -64,13 +73,19 @@
 			  minLength: 1
 			},
 			onChipAdd: function() {
-				let chipsDataObj = M.Chips.getInstance($('.chips')).chipsData;
-				let chipsArray = chipsDataObj.map(function(v, i){
-					return v.tag;
-				});
-				$('#Tags').val(chipsArray);
+				generateChips();
 			}
 		});
+
+		function generateChips() {
+			let chipsDataObj = M.Chips.getInstance($('.chips')).chipsData;
+			let chipsArray = chipsDataObj.map(function(v, i){
+				return v.tag;
+			});
+			$('#Tags').val(chipsArray);
+		}
+
+		generateChips();
 	});
 </script>
 @endsection

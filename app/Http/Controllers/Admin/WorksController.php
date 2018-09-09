@@ -98,7 +98,8 @@ class WorksController extends Controller
                 'description' => $request->input('Description'),
                 'cat_id'      => $request->input('CatID'),
                 'file'        => '',
-                'file_ver'    => 0
+                'file_ver'    => 0,
+                'extension'   => ''
             ]
         );
 
@@ -131,13 +132,70 @@ class WorksController extends Controller
             }
         }
 
-        DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore]);
+        DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);
 
         if (!is_null($HasFile)) {
             Works::where('id', $workID)->increment('file_ver');
         }
 
         return redirect()->route('admin.works.index');
+    }
+
+    public function EditWork(Request $request) {
+        $this->validate($request, [
+            'Title'       => 'required',
+            'Description' => 'required',
+            'CatID'       => 'required'
+        ]);
+        
+        $workID = $request->input('WorkID');
+
+        Works::where('id', $workID)
+            ->update(
+                [
+                    'title'       => $request->input('Title'),
+                    'description' => $request->input('Description'),
+                    'cat_id'      => $request->input('CatID'),
+                    'file'        => '',
+                    'file_ver'    => 0,
+                    'extension'   => ''
+                ]
+            );
+
+        // Delete related tags from work_tags table
+
+        DB::table('work_tags')->where('work_id', $workID)->delete();
+
+        // Update Tags table, And insert 
+
+        InsertWorkTags($workID, $request->input('Tags'));
+
+        // Update File
+
+        $HasFile = 0;
+        $fileNameToStore = 'noImage.jpg';
+        if ($request->input('Photos')) {
+            $File = $request->input('Photos');
+            if (Storage::disk('public')->exists('tmp/', $File)) {
+                $HasFile ++;
+                $PhotoExt = explode('.', $File);
+                $Ext = $PhotoExt[count($PhotoExt) - 1];
+                if (Storage::exists('public/works/' . $workID . '.' . $Ext)) {
+                    Storage::delete('public/works/' . $workID . '.' . $Ext);
+                }
+                Storage::move('public/tmp/' . $File, 'public/works/' . $workID . '.' . $Ext);
+                $fileNameToStore = $workID . '.' . $Ext;
+            }
+        }
+
+        DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);
+
+        if (!is_null($HasFile)) {
+            Works::where('id', $workID)->increment('file_ver');
+        }
+
+        return redirect()->route('admin.works.index');
+
     }
 
     //help functions
@@ -163,5 +221,20 @@ class WorksController extends Controller
 
         return $tagsArray;
 
+    }
+
+    public function InsertWorkTags($workID, $tags) {
+        $Tags = explode(',', $tags);
+
+        if (!empty($Tags)) {
+            foreach ($Tags as $key => $value) {
+                Tags::firstOrCreate(['name' => $value]);
+                $tag = Tags::where('name', $value)->first();
+
+                DB::table('work_tags')->insert(
+                    ['work_id' => $workID, 'tag_id' => $tag->id]
+                );
+            }
+        }
     }
 }
