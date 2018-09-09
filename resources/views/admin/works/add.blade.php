@@ -1,4 +1,9 @@
 @extends('admin/index')
+
+@section('sub_header')
+<link rel="stylesheet" href="{{ asset('css/plugins/fileinput.css') }}">
+<link rel="stylesheet" href="{{ asset('css/plugins/file-theme.css') }}">
+@endsection
        
 @section('section')
 
@@ -23,35 +28,28 @@
         	<i class="material-icons prefix">textsms</i>
         	<div id="chip-data-cont" class="chips chips-autocomplete"></div>
         </div>
-	    <div class="clearfix m-top-5">
-            <ul class="clearfix files-list files-list-news" data-types="[jpg, png, jpeg, gif, svg]" data-max-files="1"
-            data-name="Photos" data-index="0">
-                <li class="files-list-new-file shadow-inset" onclick="_files.selectFiles(this);">
-                    <span>
-                    	<i class="fa fa-camera-retro" aria-hidden="true"></i>
-                    </span>
-                    <p>Upload File</p>
-                </li>
-            </ul>
+        <div class="input-field col s12">
+        	<div class="file-loading">
+                <input id="file-1" type="file" class="file" name="File">
+            </div>
         </div>
         <div class="input-field col s12 right-align">
+        	<!-- <input type="hidden" name="Files" value="" id="Files"> -->
 	    	<input type="hidden" name="Tags" id="Tags" value="">
 	    	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	    	<button class="waves-effect waves-light btn-small" type="submit">Save</button>
 	    </div>
-	</form>
-	<form class="j-form files-list-form" name="files-list-form" data-index="0" method="post" enctype="multipart/form-data"
-		 action="{{ url('file/uploadphoto/') }}" data-name="Photos">
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	    <input type="hidden" name="UploadedFiles" class="files-list-uploaded-files" value="0">
-	    <input type="hidden" name="PostGroup" value="works">
-	    <input type="file" name="File" class="files-list-file" onchange="_files.uploadFiles(this);">
+
 	</form>
 </div>        
 
 @endsection
 
 @section('sub_footer')
+<script src="{{ asset('js/plugins/fileinput.js') }}"></script>
+<script src="{{ asset('js/plugins/files-sortable.js') }}"></script>
+<script src="{{ asset('js/plugins/file-theme.js') }}"></script>
+<script src="{{ asset('js/plugins/files-fa-theme.js') }}"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('.chips-autocomplete').chips({
@@ -68,6 +66,49 @@
 				$('#Tags').val(chipsArray);
 			}
 		});
+
 	});
+	var $el1 = $("#file-1");
+		$el1.fileinput({
+        	theme: 'fa',
+	        uploadUrl: "{!! url('admin/works/uploadImage') !!}",
+	        allowedFileExtensions: ['jpg', 'png', 'gif', 'mp4'],
+	        overwriteInitial: false,
+	        showUpload: false,
+	        showRemove: false,
+	        showClose: false,
+	        maxFileSize: 10000,
+	        minFileCount: 1,
+    		maxFileCount: 5,
+    		showUploadedThumbs: true,
+	        fileActionSettings : {
+	        	showZoom: false,
+	        	showUpload: false,
+				showRemove: true,
+				showDrag: true,
+				indicatorNew: "",
+				indicatorSuccess: "",
+				indicatorError: ""
+			},
+	    })
+	 //    .on("filebatchselected", function(event, files) {
+  //   		var files = $('#file-1').fileinput('getFileStack');
+  //   		let fileNames = [];
+  //   		fileNames = files.map(function(v, i) {
+  //   			return v.name;
+  //   		});
+  //   		console.log($('#file-1').val());
+
+  //   		$('#Files').val($('#file-1').val());
+		// });
+		// $('#file-1').on('fileremoved', function(event, id, index) {
+		//     var files = $('#file-1').fileinput('getFileStack');
+  //   		let fileNames = [];
+  //   		fileNames = files.map(function(v, i) {
+  //   			return v.name;
+  //   		});
+
+  //   		$('#Files').val(fileNames.join(','));
+		// });
 </script>
 @endsection

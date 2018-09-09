@@ -118,18 +118,23 @@ class WorksController extends Controller
 
         $HasFile = 0;
         $fileNameToStore = 'noImage.jpg';
-        if ($request->input('Photos')) {
-            $File = $request->input('Photos');
-            if (Storage::disk('public')->exists('tmp/', $File)) {
-                $HasFile ++;
-                $PhotoExt = explode('.', $File);
-                $Ext = $PhotoExt[count($PhotoExt) - 1];
-                if (Storage::exists('public/works/' . $workID . '.' . $Ext)) {
-                    Storage::delete('public/works/' . $workID . '.' . $Ext);
-                }
-                Storage::move('public/tmp/' . $File, 'public/works/' . $workID . '.' . $Ext);
-                $fileNameToStore = $workID . '.' . $Ext;
-            }
+        $Ext = '';
+        if ($request->hasFile('File')) {
+            $HasFile ++;
+            // $PhotoExt = explode('.', $File);
+            // $Ext = $PhotoExt[count($PhotoExt) - 1];
+            // if (Storage::exists('public/works/' . $workID . '.' . $Ext)) {
+            //     Storage::delete('public/works/' . $workID . '.' . $Ext);
+            // }
+            // $File->storeAs('public/works', $workID . '.' . $Ext);
+            // $fileNameToStore = $workID . '.' . $Ext;
+
+            $fileNameWithExt = $request->file('File')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $Ext = $request->file('File')->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $Ext;
+            $path = $request->file('File')->storeAs('public/works', $fileNameToStore);
+
         }
 
         DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);

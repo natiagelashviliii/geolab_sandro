@@ -53,7 +53,7 @@ Route::prefix('admin')->group(function(){
         Route::get('/add', ['uses' => 'Admin\WorksController@add', 'as' => 'admin.works.add']);
         Route::get('/edit/{id}', ['uses' => 'Admin\WorksController@edit', 'as' => 'admin.works.edit']);
         Route::post('/addwork', 'Admin\WorksController@addWork');
-        Route::post('/editwokr', 'Admin\WorksController@EditWork');
+        Route::post('/editwork', 'Admin\WorksController@EditWork');
     });
 
 });

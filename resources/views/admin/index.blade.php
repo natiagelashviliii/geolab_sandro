@@ -2,6 +2,7 @@
 
 @section('header')
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
+    @yield('sub_header')
 @endsection
 
 @section('content')
