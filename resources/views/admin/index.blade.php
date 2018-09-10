@@ -2,6 +2,7 @@
 
 @section('header')
     <link rel="stylesheet" href="{{ asset('css/admin/admin.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/plugins/fileinput.css') }}">
     @yield('sub_header')
 @endsection
 
@@ -25,9 +26,13 @@
 @endsection
 
 @section('footer')
-    <script src="{{ asset('js/plugins/files.js') }}"></script>
+    <!-- <script src="{{ asset('js/plugins/files.js') }}"></script> -->
     <script src="{{ asset('js/plugins/jform.js') }}"></script>
     <script src="{{ asset('js/plugins/jalerts.js') }}"></script>
+    <script src="{{ asset('js/plugins/fileinput.js') }}"></script>
+    <script src="{{ asset('js/plugins/files-sortable.js') }}"></script>
+    <script src="{{ asset('js/plugins/file-theme.js') }}"></script>
+    <script src="{{ asset('js/plugins/files-fa-theme.js') }}"></script>
     <script src="{{ asset('js/admin/admin.js') }}"></script>
     @yield('sub_footer')
 @endsection

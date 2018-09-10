@@ -540,18 +540,22 @@
     width: 100%;
     text-align: center;
 }
-.kv-file-remove{
+.kv-file-remove,
+.kv-file-download {
     background: transparent;
     box-shadow: none;
 }
-.kv-file-remove:hover{
+.kv-file-remove:hover,
+.kv-file-download:hover{
     background: #26a69a;
     box-shadow: none;
 }
-.kv-file-remove:hover i{
+.kv-file-remove:hover i,
+.kv-file-download:hover i{
     color: white;
 }
-.material-icons.delete{
+.material-icons.delete,
+.material-icons.cloud-download{
     color: #26a69a;
 }
 

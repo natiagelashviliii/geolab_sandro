@@ -24,7 +24,7 @@
         	<i class="material-icons prefix">textsms</i>
         	<div id="chip-data-cont" class="chips chips-autocomplete"></div>
         </div>
-	    <div class="clearfix m-top-5">
+	    <!-- <div class="clearfix m-top-5">
             <ul class="clearfix files-list files-list-news" data-types="[jpg, png, jpeg, gif, svg]" data-max-files="1"
             data-name="Photos" data-index="0">
        			@if($data['work']->file)
@@ -40,24 +40,29 @@
                     <p>Upload File</p>
                 </li>
             </ul>
+        </div> -->
+        <div class="input-field col s12">
+        	<div class="file-loading">
+                <input id="work-file" type="file" class="file" name="File">
+            </div>
         </div>
         <div class="input-field col s12 right-align">
-        	@if($data['work']->file)
+        	<!-- @if($data['work']->file)
 		    	<input type="hidden" class="file-names" data-index="0" name="Photos" value="{{ $data['work']->file }}">
-		    @endif
+		    @endif -->
 	    	<input type="hidden" name="Tags" id="Tags" value="">
 	    	<input type="hidden" name="WorkID" value="{{ $data['work']->id }}">
 	    	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	    	<button class="waves-effect waves-light btn-small" type="submit">Save</button>
 	    </div>
 	</form>
-	<form class="j-form files-list-form" name="files-list-form" data-index="0" method="post" enctype="multipart/form-data"
+	<!-- <form class="j-form files-list-form" name="files-list-form" data-index="0" method="post" enctype="multipart/form-data"
 		 action="{{ url('file/uploadphoto/') }}" data-name="Photos">
 		<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	    <input type="hidden" name="UploadedFiles" class="files-list-uploaded-files" value="0">
 	    <input type="hidden" name="PostGroup" value="works">
 	    <input type="file" name="File" class="files-list-file" onchange="_files.uploadFiles(this);">
-	</form>
+	</form> -->
 </div>        
 
 @endsection
@@ -76,7 +81,6 @@
 				generateChips();
 			}
 		});
-
 		function generateChips() {
 			let chipsDataObj = M.Chips.getInstance($('.chips')).chipsData;
 			let chipsArray = chipsDataObj.map(function(v, i){
@@ -84,8 +88,36 @@
 			});
 			$('#Tags').val(chipsArray);
 		}
-
 		generateChips();
 	});
+	var url1 = "{{ asset('storage/works') . '/' . $data['work']->file }}";
+	var $uploadFile = $("#work-file");
+	$uploadFile.fileinput({
+		initialPreview: [url1],
+        initialPreviewAsData: true,
+        initialPreviewConfig: [
+            {caption: "{{$data['work']->file}}", filename: "{{$data['work']->file}}", downloadUrl: url1, size: 930321, width: "120px", key: 1},
+        ],
+        overwriteInitial: true,
+
+    	theme: 'fa',
+        uploadUrl: "{!! url('admin/works/uploadImage') !!}",
+        allowedFileExtensions: ['jpg', 'png', 'gif', 'mp4'],
+        showUpload: false,
+        showRemove: false,
+        showClose: false,
+        maxFileSize: 10000,
+		maxFileCount: 1,
+		showUploadedThumbs: true,
+        fileActionSettings : {
+        	showZoom: false,
+        	showUpload: false,
+			showRemove: true,
+			showDrag: true,
+			indicatorNew: "",
+			indicatorSuccess: "",
+			indicatorError: ""
+		},
+    });
 </script>
 @endsection

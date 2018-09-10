@@ -18,7 +18,7 @@
             removeIcon: ' <i class="material-icons delete">delete</i>',
             uploadIcon: '<i class="fa fa-upload"></i>',
             uploadRetryIcon: '<i class="fa fa-repeat"></i>',
-            downloadIcon: '<i class="fa fa-download"></i>',
+            downloadIcon: '<i class="material-icons cloud-download">cloud_download</i>',
             zoomIcon: '<i class="fa fa-search-plus"></i>',
             dragIcon: '<i class="fa fa-arrows"></i>',
             indicatorNew: '<i class="material-icons uploaded">check</i>',
