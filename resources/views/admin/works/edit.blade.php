@@ -96,7 +96,7 @@
 		initialPreview: [url1],
         initialPreviewAsData: true,
         initialPreviewConfig: [
-            {caption: "{{$data['work']->file}}", filename: "{{$data['work']->file}}", downloadUrl: url1, size: 930321, width: "120px", key: 1},
+            {caption: "{{$data['work']->file}}", filename: "{{$data['work']->file}}", downloadUrl: url1, key: 1},
         ],
         overwriteInitial: true,
 
@@ -113,7 +113,7 @@
         	showZoom: false,
         	showUpload: false,
 			showRemove: true,
-			showDrag: true,
+			showDrag: false,
 			indicatorNew: "",
 			indicatorSuccess: "",
 			indicatorError: ""
