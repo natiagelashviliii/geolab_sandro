@@ -38,30 +38,27 @@ class AboutController extends Controller
     		'Description' => 'required',
     	]);
 
-        $HasPhoto = 0;
-        $fileNameToStore = '';
-        if ($request->input('Photos')) {
-            $Photo = $request->input('Photos');
-            if (Storage::disk('public')->exists('tmp/', $Photo)) {
-                $HasPhoto ++;
-                $PhotoExt = explode('.', $Photo);
-                $Ext = $PhotoExt[count($PhotoExt) - 1];
-                if (Storage::exists('public/about/about_1.' . $Ext)) {
-                    Storage::delete('public/about/about_1.' . $Ext);
-                }
-                Storage::move('public/tmp/' . $Photo, 'public/about/about_1.' . $Ext);
-                $fileNameToStore = 'about_1.' . $Ext;
-            }
-        }
-
         About::updateOrCreate(
             ['id' => 1],
             [
                 'title' => $request->input('Title'), 
                 'description' => $request->input('Description'),
-                'image' => $fileNameToStore,
             ]
         );
+
+        //update file
+        
+        $HasPhoto = 0;
+        if ($request->hasFile('File')) {
+            $HasPhoto ++;
+            $fileNameWithExt = $request->file('File')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $Ext = $request->file('File')->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $Ext;
+            $path = $request->file('File')->storeAs('public/about', $fileNameToStore);
+
+            About::where('id', 1)->update(['image' => $fileNameToStore]);
+        }
 
         if (!is_null($HasPhoto)) {
             About::increment('photo_ver');    

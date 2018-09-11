@@ -539,6 +539,8 @@
     display: block;
     width: 100%;
     text-align: center;
+    display: flex;
+    justify-content: center;
 }
 .kv-file-remove,
 .kv-file-download {
