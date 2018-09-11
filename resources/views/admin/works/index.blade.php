@@ -34,15 +34,19 @@
 						<p class="mg-all-0">{{ str_limit($value->description, $limit = 100, $end = '...') }}</p>
 					</div>
 					<div class="tags">
-						<span><a href="">#design</a></span>
-						<span><a href="">#illustrations</a></span>
+						@foreach($value->tags as $tagKey => $tagVal)
+							<span><a href="">#{{ $tagVal->name }}</a></span>
+						@endforeach
 					</div>
 					<div class="category">
 						<span>Category: <a href="">{{ $value->cat_title }}</a></span>
 					</div>
 					<div class="actions center-align">
 						<a href="{{ url('admin/works/edit/'.$value->id) }}"><i class="large material-icons" title="Edit">edit</i></a>
-						<a onclick="admin.deleteWork({{ $value->id }}, this)"><i class="large material-icons" title="Delete">clear</i></a>
+						<a onclick="works.deleteWork({{ $value->id }}, this)"><i class="large material-icons" title="Delete">clear</i></a>
+						<a onclick="works.changeWorkStatus({{ $value->id }}, this)"><i class="large material-icons" title="Delete">
+							@if($value->status == 0) star_border @else star @endif
+						</i></a>
 					</div>
 				</div>
 			</div>

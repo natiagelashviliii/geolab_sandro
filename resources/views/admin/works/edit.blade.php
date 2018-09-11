@@ -3,7 +3,7 @@
 @section('section')
 
 <div class="row works-add-content pd-all-40">
-	<form action="{{ url('admin/works/addwork') }}" class="file-form" method="post" onsubmit="return admin.submitForm(this);" enctype="multipart/form-data">
+	<form action="{{ url('admin/works/editwork') }}" class="file-form" method="post" onsubmit="return admin.submitForm(this);" enctype="multipart/form-data">
 		<div class="input-field col s5">
 			<select name="CatID">
 			  @foreach($data['cats'] as $key => $value)
@@ -24,45 +24,18 @@
         	<i class="material-icons prefix">textsms</i>
         	<div id="chip-data-cont" class="chips chips-autocomplete"></div>
         </div>
-	    <!-- <div class="clearfix m-top-5">
-            <ul class="clearfix files-list files-list-news" data-types="[jpg, png, jpeg, gif, svg]" data-max-files="1"
-            data-name="Photos" data-index="0">
-       			@if($data['work']->file)
-					<li data-file="{{ asset('storage/works') . '/' . $data['work']->file }}">
-						<img src="{{ asset('storage/works') . '/' . $data['work']->file }}">
-						<i class="fa fa-times" aria-hidden="true" onclick="_files.removeFile(this);" title="Delete"></i>
-					</li>
-				@endif
-                <li class="files-list-new-file shadow-inset" onclick="_files.selectFiles(this);" style="@if($data['work']->file) {{'display:none;'}} @endif">
-                    <span>
-                    	<i class="fa fa-camera-retro" aria-hidden="true"></i>
-                    </span>
-                    <p>Upload File</p>
-                </li>
-            </ul>
-        </div> -->
         <div class="input-field col s12">
         	<div class="file-loading">
                 <input id="work-file" type="file" class="file" name="File">
             </div>
         </div>
         <div class="input-field col s12 right-align">
-        	<!-- @if($data['work']->file)
-		    	<input type="hidden" class="file-names" data-index="0" name="Photos" value="{{ $data['work']->file }}">
-		    @endif -->
 	    	<input type="hidden" name="Tags" id="Tags" value="">
 	    	<input type="hidden" name="WorkID" value="{{ $data['work']->id }}">
 	    	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	    	<button class="waves-effect waves-light btn-small" type="submit">Save</button>
 	    </div>
 	</form>
-	<!-- <form class="j-form files-list-form" name="files-list-form" data-index="0" method="post" enctype="multipart/form-data"
-		 action="{{ url('file/uploadphoto/') }}" data-name="Photos">
-		<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	    <input type="hidden" name="UploadedFiles" class="files-list-uploaded-files" value="0">
-	    <input type="hidden" name="PostGroup" value="works">
-	    <input type="file" name="File" class="files-list-file" onchange="_files.uploadFiles(this);">
-	</form> -->
 </div>        
 
 @endsection
@@ -95,11 +68,12 @@
 	$uploadFile.fileinput({
 		initialPreview: [url1],
         initialPreviewAsData: true,
+        initialPreviewFileType: "image",
         initialPreviewConfig: [
-            {caption: "{{$data['work']->file}}", filename: "{{$data['work']->file}}", downloadUrl: url1, key: 1},
+            {caption: "{{$data['work']->file}}", filename: "{{$data['work']->file}}", downloadUrl: url1, key:0},
         ],
         overwriteInitial: true,
-
+        deleteUrl: '{{ url("admin/works/deletephoto/") }}',
     	theme: 'fa',
         uploadUrl: "{!! url('admin/works/uploadImage') !!}",
         allowedFileExtensions: ['jpg', 'png', 'gif', 'mp4'],

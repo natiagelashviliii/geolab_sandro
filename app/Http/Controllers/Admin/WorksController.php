@@ -45,6 +45,10 @@ class WorksController extends Controller
                         ->paginate(12);
         }
 
+        foreach ($Works as $key => $value) {
+            $Works->tags = Works::find($value->id)->tags()->pluck('name')->toArray();
+        }
+
         $Categories = DB::table('categories')->where('status', '1')->get();
 
         return view('admin/works/index', ['Works' => $Works, 'Cats' => $Categories]);
@@ -85,6 +89,10 @@ class WorksController extends Controller
     	return view('admin/works/edit', ['data' => $data]);
     }
 
+    public function deletephoto(Request $request) {
+        return json_encode(['message' => 'ok']);
+    }
+
     public function AddWork(Request $request) {
         $this->validate($request, [
             'Title'       => 'required',
@@ -98,7 +106,6 @@ class WorksController extends Controller
                 'description' => $request->input('Description'),
                 'cat_id'      => $request->input('CatID'),
                 'file'        => '',
-                'file_ver'    => 0,
                 'extension'   => ''
             ]
         );
@@ -118,29 +125,15 @@ class WorksController extends Controller
 
         $HasFile = 0;
         $fileNameToStore = 'noImage.jpg';
-        $Ext = '';
         if ($request->hasFile('File')) {
             $HasFile ++;
-            // $PhotoExt = explode('.', $File);
-            // $Ext = $PhotoExt[count($PhotoExt) - 1];
-            // if (Storage::exists('public/works/' . $workID . '.' . $Ext)) {
-            //     Storage::delete('public/works/' . $workID . '.' . $Ext);
-            // }
-            // $File->storeAs('public/works', $workID . '.' . $Ext);
-            // $fileNameToStore = $workID . '.' . $Ext;
-
             $fileNameWithExt = $request->file('File')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
             $Ext = $request->file('File')->getClientOriginalExtension();
             $fileNameToStore = $fileName . '_' . time() . '.' . $Ext;
             $path = $request->file('File')->storeAs('public/works', $fileNameToStore);
 
-        }
-
-        DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);
-
-        if (!is_null($HasFile)) {
-            Works::where('id', $workID)->increment('file_ver');
+            DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);
         }
 
         return redirect()->route('admin.works.index');
@@ -160,10 +153,7 @@ class WorksController extends Controller
                 [
                     'title'       => $request->input('Title'),
                     'description' => $request->input('Description'),
-                    'cat_id'      => $request->input('CatID'),
-                    'file'        => '',
-                    'file_ver'    => 0,
-                    'extension'   => ''
+                    'cat_id'      => $request->input('CatID')
                 ]
             );
 
@@ -173,34 +163,41 @@ class WorksController extends Controller
 
         // Update Tags table, And insert 
 
-        InsertWorkTags($workID, $request->input('Tags'));
+        $this->InsertWorkTags($workID, $request->input('Tags'));
 
         // Update File
 
         $HasFile = 0;
-        $fileNameToStore = 'noImage.jpg';
-        if ($request->input('Photos')) {
-            $File = $request->input('Photos');
-            if (Storage::disk('public')->exists('tmp/', $File)) {
-                $HasFile ++;
-                $PhotoExt = explode('.', $File);
-                $Ext = $PhotoExt[count($PhotoExt) - 1];
-                if (Storage::exists('public/works/' . $workID . '.' . $Ext)) {
-                    Storage::delete('public/works/' . $workID . '.' . $Ext);
-                }
-                Storage::move('public/tmp/' . $File, 'public/works/' . $workID . '.' . $Ext);
-                $fileNameToStore = $workID . '.' . $Ext;
-            }
-        }
+        if ($request->hasFile('File')) {
+            $HasFile ++;
+            $fileNameWithExt = $request->file('File')->getClientOriginalName();
+            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+            $Ext = $request->file('File')->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $Ext;
+            $path = $request->file('File')->storeAs('public/works', $fileNameToStore);
 
-        DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);
-
-        if (!is_null($HasFile)) {
-            Works::where('id', $workID)->increment('file_ver');
+            DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);
         }
 
         return redirect()->route('admin.works.index');
 
+    }
+
+    public function Delete(Request $request) {
+        $query = DB::table('works')->where('id', $request->input('WorkID'))->update(['status' => 2]);
+
+        return ['success' => $query];
+    }
+
+    public function ChangeStatus(Request $request) {
+        
+        $work = Works::select('status')->where('id', $request->input('WorkID'))->first();
+        $status = ($work->status == 0) ? 1 : 0;
+        if (Works::where('id', $request->input('WorkID'))->update(['status' =>  $status])) {
+            return ['success' => true];
+        } else {
+            return ['success' => false];
+        }
     }
 
     //help functions
@@ -242,4 +239,5 @@ class WorksController extends Controller
             }
         }
     }
+
 }

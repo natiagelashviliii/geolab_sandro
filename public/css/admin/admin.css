@@ -187,6 +187,7 @@ label{
 }
 .each-work{
   margin-bottom: 20px;
+  position: relative;
 }
 .each-work .file{
   display: flex;
@@ -303,6 +304,20 @@ label{
 }
 .filter-item.active a{
   color: #26a69a;
+}
+.loading{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  opacity: .8;
+  background-image: url('../../img/loading.svg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100px;
+
 }
 @media only screen and (max-width: 1200px){
 	.admin-header{

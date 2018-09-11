@@ -52,8 +52,11 @@ Route::prefix('admin')->group(function(){
         Route::get('/', ['uses' => 'Admin\WorksController@index', 'as' => 'admin.works.index']);
         Route::get('/add', ['uses' => 'Admin\WorksController@add', 'as' => 'admin.works.add']);
         Route::get('/edit/{id}', ['uses' => 'Admin\WorksController@edit', 'as' => 'admin.works.edit']);
+        Route::post('/delete', 'Admin\WorksController@delete');
         Route::post('/addwork', 'Admin\WorksController@addWork');
         Route::post('/editwork', 'Admin\WorksController@EditWork');
+        Route::any('/deletephoto', 'Admin\WorksController@DeletePhoto');
+        Route::post('/changeStatus', 'Admin\WorksController@ChangeStatus');
     });
 
 });

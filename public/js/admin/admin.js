@@ -55,3 +55,56 @@ var admin = {
 		return false;
 	}
 }
+
+works = {
+	addLoader: function(obj) {
+		$(obj).closest('.each-work').prepend('<div class="loading"></div>');
+	},	
+	removeLoader: function() {
+		$('.loading').remove();
+	},
+	changeWorkStatus: function(WorkID = null, obj) {
+		if (!WorkID) {
+			return
+		}
+
+		let starStatus = ($(obj).find('i').text().trim() == 'star') ? 'star_border' : 'star' ;
+		works.addLoader(obj);
+		$.post('works/changeStatus', {'WorkID': WorkID, '_token': $('meta[name="csrf-token"]').attr('content')}, function(resp) {
+			if (resp.success) {
+				$(obj).find('i').text(starStatus);
+				works.removeLoader();
+			} else {
+				jAlert('Problem while updating status!', 'Message', function() {
+					
+				});
+			}
+		});
+	},
+
+	deleteWork: function(WorkID, obj) {
+		if (!WorkID) {
+			return false;
+		}
+		
+		works.addLoader(obj);
+		jConfirm('Do you want to delete this work project?', 'Message', function(e){
+			if (e) {
+				$.post('works/delete', {'WorkID': WorkID, '_token': $('meta[name="csrf-token"]').attr('content')}, function(resp) {
+					if (resp.success) {
+						$(obj).closest('.each-work').remove();
+						jAlert('Work project was successfully deleted', 'Message', function() {
+
+						});
+					}
+				});
+			} else{
+				works.removeLoader();
+				console.log('false');
+			}
+		});
+
+		return false;
+	}
+
+}
