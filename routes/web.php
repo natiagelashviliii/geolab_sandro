@@ -11,15 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('main/index');
-});
+// Route::get('/', function () {
+//     return view('main/index');
+// });
+
+Route::get('/', 'HomeController@index');
+Route::get('/home', 'HomeController@index');
+Route::get('/about', 'AboutController@index');
+Route::get('/contact', 'ContactController@index');
+
+
+
+// Admin routes
 
 Auth::routes();
-
-// Route::get('/admin', 'Admin\HomeController@index')->name('home');
-
-Route::post('file/uploadphoto', 'FileController@uploadPhoto');
 
 Route::prefix('admin')->group(function(){
 
