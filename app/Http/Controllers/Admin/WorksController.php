@@ -71,6 +71,8 @@ class WorksController extends Controller
             return view('admin/works/index');
         }
 
+        //get data
+
     	$data = array();
         $cats = Categories::where('status', 1)->get();
         $work = Works::select('works.*', 'categories.title AS cat_title')
