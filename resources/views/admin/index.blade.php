@@ -16,9 +16,10 @@
             <li><a @if(Request::is('admin/about')) class="active-link" @endif href="{{ url('admin/about') }}">About</a></li>
             <li><a @if(Request::is('admin/contact')) class="active-link" @endif href="{{ url('admin/contact') }}">Contact</a></li>
         </ul>
+        <button class="resp-menu-btn"><i class="large material-icons">more_vert</i></button>
     </header>
 
-    <div class="admin-main col s9 xl10 offset-xl2 offset-s3">
+    <div class="admin-main col s12 m9 xl10 offset-xl2 offset-m3">
         @yield('section')
     </div>
 </section>

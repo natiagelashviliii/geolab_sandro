@@ -1,3 +1,25 @@
+$(document).ready(function() {
+	$('.resp-menu-btn').on('click', function(e) {
+		e.preventDefault();
+		if ($('.admin-header').hasClass('active')) {
+			$('.admin-header').css({
+			    "-webkit-transform":"translate(calc(-100% + 25px))",
+			    "-ms-transform":"translate(calc(-100% + 25px))",
+			    "transform":"translate(calc(-100% + 25px))"
+	  		});
+	  		$('.admin-header').removeClass('active');
+		} else {
+			$('.admin-header').css({
+			    "-webkit-transform":"translate(0)",
+			    "-ms-transform":"translate(0)",
+			    "transform":"translate(0)"
+	  		});
+	  		$('.admin-header').addClass('active');
+		}
+	});
+});
+
+
 function CheckEmail(obj) {
 	$('.input-error-text').remove();
 	var emailRegEx = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
@@ -108,3 +130,4 @@ works = {
 	}
 
 }
+

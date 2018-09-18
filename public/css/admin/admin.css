@@ -29,6 +29,9 @@ label{
 .pd-all-40{
   padding: 40px!important;
 }
+.resp-menu-btn{
+  display: none;
+}
 .page-item.active .page-link{
   color: white;
   display: inline-block;
@@ -324,6 +327,51 @@ label{
 		width: 25%;
 	}
 }
+
+@media only screen and (max-width: 600px){
+  .admin-header{
+    width: 100%;
+    background: rgba(255, 255, 255, 0.97);
+    z-index: 10;
+    transform: translateX(calc(-100% + 25px));
+    transition: 0.5s;
+  }
+  .admin-header ul{
+    margin-top: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .resp-menu-btn{
+    display: block;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    background: transparent;
+    border: none;
+    padding: 0;
+  }
+  .resp-menu-btn:focus{
+    background: transparent;
+    border: none;
+  }
+  .resp-menu-btn:hover{
+    cursor: pointer;
+  }
+  .resp-menu-btn i{
+    font-size: 30px;
+    color: #4a4949;
+  }
+  .admin-header.active .resp-menu-btn i {
+    color: #26a69a;
+  }
+  .manage-categories{
+    text-align: center;
+  }
+}
+
+
 
 
 /* jAlert css */

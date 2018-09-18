@@ -22,7 +22,7 @@
 	<div class="col s12 works">
 		<div class="row">
 		@foreach($Works as $key => $value) 
-			<div class="col s12 m12 l6 xl4 each-work">
+			<div class="col s12 m6 l4 xl3 each-work">
 				<div class="file">
 					<img src="{{ asset('storage/works') . '/' . $value->file }}">
 				</div>
