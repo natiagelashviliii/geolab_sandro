@@ -2,6 +2,7 @@
 
 @section('content')
 
-main page
+works page
+
 
 @endsection

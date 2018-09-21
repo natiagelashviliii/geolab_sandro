@@ -4,27 +4,41 @@
     <meta charset="UTF-8">
     <meta name="csrf-token" content="{{ Session::token() }}"> 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Geolab Sandro</title>
-        <link rel="stylesheet" href="{{ asset('css/plugins/materialize.min.css') }}">
-        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-        <link rel="stylesheet" href="{{ asset('css/plugins/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/plugins/materialize.min.css') }}">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/plugins/font-awesome.min.css') }}">
     @if (!Request::is('admin/*') && !Request::is('admin'))
-        <link rel="stylesheet" href="{{ asset('css/style.css') }}">   
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/owl.carousel.min.css') }}"> 
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/owl.theme.default.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/simplelightbox.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">   
     @endif
     @yield('header')
     </head>
     <body>
-    
+
+    @if (!Request::is('admin/*') && !Request::is('admin'))
+        @include('shared.header')
+    @endif
+
+
     <!-- content start -->
     
     @yield('content')
 
     <!-- content end -->
-    
+
+    @if (!Request::is('admin/*') && !Request::is('admin'))
+        @include('shared.footer')
+    @endif
+
     <script src="{{ asset('js/plugins/jquery.min.js') }}"></script>
     <script src="{{ asset('js/plugins/jquery-ui.min.js') }}"></script>
     <script src="{{ asset('js/plugins/materialize.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/simple-lightbox.min.js') }}"></script>
     @yield('footer')
     <script src="{{ asset('js/script.js') }}"></script>
     </body>
