@@ -20,6 +20,7 @@ Route::get('/home', 'HomeController@index');
 Route::get('/about', 'AboutController@index');
 Route::get('/contact', 'ContactController@index');
 Route::get('/works', 'WorksController@index');
+Route::any('/home/changemode', 'HomeController@ChangeMode');
 
 
 

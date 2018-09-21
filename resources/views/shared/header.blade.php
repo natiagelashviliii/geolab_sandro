@@ -45,9 +45,9 @@
             </ul>
             <div class="change-mode">
                 <div class="mode-inside hidden">
-                    <a class="white-mode active left">white</a>
-                    <a class="mode-button left"></a>
-                    <a class="black-mode left">black</a>
+                    <a class="white-mode left @if ($Mode == 'white') active @endif">white</a>
+                    <a class="mode-button left @if ($Mode == 'black') active @endif"></a>
+                    <a class="black-mode left @if ($Mode == 'black') active @endif">black</a>
                     <div class="clear"></div>
                 </div>
             </div>
@@ -56,16 +56,16 @@
     </div>
     <div class="change-mode not-resp hide-on-med-and-down">
         <div class="mode-inside hidden">
-            <a class="white-mode active left">white</a>
-            <a class="mode-button left"></a>
-            <a class="black-mode left">black</a>
+            <a class="white-mode left @if ($Mode == 'white') active @endif">white</a>
+            <a class="mode-button left @if ($Mode == 'black') active @endif"></a>
+            <a class="black-mode left @if ($Mode == 'black') active @endif">black</a>
             <div class="clear"></div>
         </div>
     </div>
 
 </header>
 
-<div class="night active"></div>
+<div class="night @if ($Mode == 'white') active @endif"></div>
 
 <!-- header end -->
 

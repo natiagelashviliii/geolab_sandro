@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class ContactController extends Controller
 {
@@ -13,6 +14,7 @@ class ContactController extends Controller
 
     	$Data = [
     		'Contact' => $Contact,
+    		'Mode'    => Session::has('mode') ? Session::get('mode') : false ,
     		'Socials' => json_decode($Contact['socials'], true)
     	];
 

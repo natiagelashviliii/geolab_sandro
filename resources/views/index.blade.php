@@ -17,7 +17,12 @@
     @endif
     @yield('header')
     </head>
+    @if (!Request::is('admin/*') && !Request::is('admin') && ($Mode == 'black'))
+    <body class="night-mode">
+    @else
     <body>
+    @endif
+
 
     @if (!Request::is('admin/*') && !Request::is('admin'))
         @include('shared.header')

@@ -78,12 +78,14 @@ $(document).ready(function(){
 
     // change mode code
     $('.black-mode').on('click',function(){
+        setMode();
         $('.black-mode, .mode-button').addClass('active');
         $('body').addClass('night-mode');
         $('.night, .white-mode').removeClass('active');
         $('.responsive-menu').removeClass('active');
     });
     $('.white-mode').on('click',function(){
+        setMode();
         $('.black-mode, .mode-button').removeClass('active');
         $('.white-mode, .night').addClass('active');
         $('body').removeClass('night-mode');
@@ -101,6 +103,14 @@ $(document).ready(function(){
             $('.night, .white-mode').addClass('active');            
         }
     });
+
+    function setMode() {
+        let mode = ($('.night').hasClass('active')) ? 'black' : 'white' ;
+        console.log(mode);
+        $.post('home/changemode', {'mode': mode}, function(resp) {
+            console.log(resp);
+        });
+    }
 
     // slashes between social links
     $('.socials li + li').prepend('/');
