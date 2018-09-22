@@ -17,14 +17,14 @@
     @endif
     @yield('header')
     </head>
-    @if (!Request::is('admin/*') && !Request::is('admin') && ($Mode == 'black'))
+    @if ((!Request::is('admin/*') && !Request::is('admin') && !Request::is('login')) && ($Mode == 'black'))
     <body class="night-mode">
     @else
     <body>
     @endif
 
 
-    @if (!Request::is('admin/*') && !Request::is('admin'))
+    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login'))
         @include('shared.header')
     @endif
 
@@ -35,7 +35,7 @@
 
     <!-- content end -->
 
-    @if (!Request::is('admin/*') && !Request::is('admin'))
+    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login'))
         @include('shared.footer')
     @endif
 
