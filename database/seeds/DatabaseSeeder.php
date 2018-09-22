@@ -25,5 +25,11 @@ class DatabaseSeeder extends Seeder
         	'phone' => '(+995) 595 382 292',
         	'socials' => '',
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'sandro',
+            'email' => 'email@example.ge',
+            'password' => bcrypt('secret')
+        ]);
     }	
 }
