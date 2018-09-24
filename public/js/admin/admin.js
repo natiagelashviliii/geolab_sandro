@@ -17,6 +17,33 @@ $(document).ready(function() {
 	  		$('.admin-header').addClass('active');
 		}
 	});
+
+	$('.upload-file-btn').on('click', function(e) {
+		$('.image-field').css('display', 'block');
+		$('.video-field').css('display', 'none');
+		checkFileUplBlock();
+		e.preventDefault();
+	});
+
+	$('.upload-video-btn').on('click', function(e) {
+		$('.image-field').css('display', 'none');
+		$('.video-field').css('display', 'block');
+		checkFileUplBlock();
+		e.preventDefault();
+	});
+
+	function checkFileUplBlock() {
+		if($('.image-field:visible').length > 0) {
+			$('#Video').val('');
+			$('.upload-video-btn').css('display', 'block');
+			$('.upload-file-btn').css('display', 'none');
+		}
+		if($('.video-field:visible').length > 0) {
+			$('#work-file').val('');
+			$('.upload-video-btn').css('display', 'none');
+			$('.upload-file-btn').css('display', 'block');
+		}
+	}
 });
 
 

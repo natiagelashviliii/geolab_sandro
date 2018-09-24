@@ -19,16 +19,23 @@
 	    	<textarea id="Description" name="Description" class="materialize-textarea height-110" rows="5" data-error="*">{{ $data['work']->description }}</textarea>
 	    	<label for="Description">Description</label>
 	    </div>
-
 		<div class="input-field col s12">
         	<i class="material-icons prefix">textsms</i>
         	<div id="chip-data-cont" class="chips chips-autocomplete"></div>
         </div>
-        <div class="input-field col s12">
+        <div class="input-field col s12 image-field @if( $data['work']->file) {{ 'image-edit-field' }} @endif">
         	<div class="file-loading">
                 <input id="work-file" type="file" class="file" name="File">
             </div>
         </div>
+        <div class="input-field col s12 video-field @if($data['work']->video) {{ 'video-edit-field' }} @endif">
+			<input id="Video" name="Video" type="text" value="{{ $data['work']->video }}">
+			<label class="active" for="Video">Insert video url here</label>
+		</div>
+		<div class="input-field col s12">
+			<button class="waves-effect waves-light btn upload-file-btn"><i class="material-icons left">image</i>Upload File</button>
+			<button class="waves-effect waves-light btn upload-video-btn"><i class="material-icons left">video_library</i>Insert Video URL</button>
+		</div>
         <div class="input-field col s12 right-align">
 	    	<input type="hidden" name="Tags" id="Tags" value="">
 	    	<input type="hidden" name="WorkID" value="{{ $data['work']->id }}">
@@ -63,17 +70,25 @@
 		}
 		generateChips();
 	});
+
+	var file = ("{{$data['work']->file}}").length;
+	console.log(file);
 	var url1 = "{{ asset('storage/works') . '/' . $data['work']->file }}";
-	var $uploadFile = $("#work-file");
-	$uploadFile.fileinput({
-		initialPreview: [url1],
-        initialPreviewAsData: true,
-        initialPreviewFileType: "image",
-        initialPreviewConfig: [
-            {caption: "{{$data['work']->file}}", filename: "{{$data['work']->file}}", downloadUrl: url1, key:0},
-        ],
-        overwriteInitial: true,
-        deleteUrl: '{{ url("admin/works/deletephoto/") }}',
+	var uploadFile = $("#work-file");
+	if (file > 0) {
+    	uploadFile.fileinput({
+    		initialPreview: [url1],
+	        initialPreviewAsData: true,
+	        initialPreviewFileType: "image",
+	        initialPreviewConfig: [
+	            {caption: "{{$data['work']->file}}", filename: "{{$data['work']->file}}", downloadUrl: url1, key:0},
+	        ],
+	        overwriteInitial: true,
+	        deleteUrl: '{{ url("admin/works/deletephoto/") }}',
+    	});
+    }
+	uploadFile.fileinput({
+		
     	theme: 'fa',
         uploadUrl: "{!! url('admin/works/uploadImage') !!}",
         allowedFileExtensions: ['jpg', 'png', 'gif', 'mp4'],
@@ -93,5 +108,7 @@
 			indicatorError: ""
 		},
     });
+
+
 </script>
 @endsection

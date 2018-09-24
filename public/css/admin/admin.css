@@ -320,8 +320,17 @@ label{
   background-position: center;
   background-repeat: no-repeat;
   background-size: 100px;
-
 }
+.image-field,
+.video-field{
+  display: none;
+}
+
+.image-edit-field,
+.video-edit-field{
+  display: block;
+}
+
 @media only screen and (max-width: 1200px){
 	.admin-header{
 		width: 25%;
