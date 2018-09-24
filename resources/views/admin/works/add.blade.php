@@ -32,12 +32,15 @@
                 <input id="work-file" type="file" class="file" name="File">
             </div>
         </div>
+	    <div class="input-field col s12">
+			<input id="Video" name="Video" type="text">
+			<label class="active" for="Video">Attach Video Here</label>
+		</div>
         <div class="input-field col s12 right-align">
 	    	<input type="hidden" name="Tags" id="Tags" value="">
 	    	<input type="hidden" name="_token" value="{{ csrf_token() }}">
 	    	<button class="waves-effect waves-light btn-small" type="submit">Save</button>
 	    </div>
-
 	</form>
 </div>        
 

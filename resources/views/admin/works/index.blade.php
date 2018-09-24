@@ -24,7 +24,11 @@
 		@foreach($Works as $key => $value) 
 			<div class="col s12 m6 l4 xl3 each-work">
 				<div class="file">
+					@if($value->file)
 					<img src="{{ asset('storage/works') . '/' . $value->file }}">
+					@elseif($value->video)
+					<img src="{{ $value->video_thumb }}">
+					@endif
 				</div>
 				<div class="file-descr">
 					<div class="title">

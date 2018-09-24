@@ -23,11 +23,9 @@
     <body>
     @endif
 
-
     @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login'))
         @include('shared.header')
     @endif
-
 
     <!-- content start -->
     

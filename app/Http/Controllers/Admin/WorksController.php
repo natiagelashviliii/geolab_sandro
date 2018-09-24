@@ -47,6 +47,9 @@ class WorksController extends Controller
 
         foreach ($Works as $key => $value) {
             $Works->tags = Works::find($value->id)->tags()->pluck('name')->toArray();
+            if ($value->video) {
+                $value->video_thumb = $this->GenerateVideoThumb($value->video);
+            }
         }
 
         $Categories = DB::table('categories')->where('status', '1')->get();
@@ -108,7 +111,8 @@ class WorksController extends Controller
                 'description' => $request->input('Description'),
                 'cat_id'      => $request->input('CatID'),
                 'file'        => '',
-                'extension'   => ''
+                'extension'   => '',
+                'video'       => ''
             ]
         );
 
@@ -125,17 +129,20 @@ class WorksController extends Controller
             }
         }
 
-        $HasFile = 0;
-        $fileNameToStore = 'noImage.jpg';
+        $fileNameToStore = '';
+        $ext = '';
         if ($request->hasFile('File')) {
-            $HasFile ++;
             $fileNameWithExt = $request->file('File')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $Ext = $request->file('File')->getClientOriginalExtension();
-            $fileNameToStore = $fileName . '_' . time() . '.' . $Ext;
+            $ext = $request->file('File')->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $ext;
             $path = $request->file('File')->storeAs('public/works', $fileNameToStore);
 
-            DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);
+        }
+        DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $ext]);
+
+        if ($request->input('Video')) {
+            DB::table('works')->where('id', $workID)->update(['video' => $request->input('Video')]);
         }
 
         return redirect()->route('admin.works.index');
@@ -169,17 +176,17 @@ class WorksController extends Controller
 
         // Update File
 
-        $HasFile = 0;
+        $fileNameToStore = '';
+        $ext = '';
         if ($request->hasFile('File')) {
-            $HasFile ++;
             $fileNameWithExt = $request->file('File')->getClientOriginalName();
             $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $Ext = $request->file('File')->getClientOriginalExtension();
-            $fileNameToStore = $fileName . '_' . time() . '.' . $Ext;
+            $ext = $request->file('File')->getClientOriginalExtension();
+            $fileNameToStore = $fileName . '_' . time() . '.' . $ext;
             $path = $request->file('File')->storeAs('public/works', $fileNameToStore);
 
-            DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $Ext]);
         }
+        DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $ext]);
 
         return redirect()->route('admin.works.index');
 
@@ -204,7 +211,7 @@ class WorksController extends Controller
 
     //help functions
 
-    public function GetTags() {
+    private function GetTags() {
         $tagsArray  = array();
         $tags       = Tags::get();
 
@@ -215,7 +222,7 @@ class WorksController extends Controller
         return $tagsArray;
     }
 
-    public function GenerateUsedTags($id) {
+    private function GenerateUsedTags($id) {
         $tagsArray = [];
         $tags = Works::find($id)->tags()->pluck('name')->toArray();
 
@@ -227,7 +234,7 @@ class WorksController extends Controller
 
     }
 
-    public function InsertWorkTags($workID, $tags) {
+    private function InsertWorkTags($workID, $tags) {
         $Tags = explode(',', $tags);
 
         if (!empty($Tags)) {
@@ -240,6 +247,24 @@ class WorksController extends Controller
                 );
             }
         }
+    }
+
+    private function GenerateVideoThumb($video_url) {
+        $oembed_endpoint = 'http://vimeo.com/api/oembed';
+        $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url) . '&width=640';
+        function curl_get($url) {
+            $curl = curl_init($url);
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
+            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
+            $return = curl_exec($curl);
+            curl_close($curl);
+            return $return;
+        }
+        
+        $oembed = simplexml_load_string(curl_get($xml_url));
+
+        return $oembed->thumbnail_url;
     }
 
 }
