@@ -178,5 +178,6 @@ $(document).ready(function(){
     });
     $('.responsive-menu .close').on('click', function(){
         $('.responsive-menu').removeClass('active')
-    })
+    });
+
 });

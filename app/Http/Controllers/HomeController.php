@@ -13,7 +13,8 @@ class HomeController extends Controller
     	$Contact = Contact::where('id', 1)->first();
     	$Data = [
     		'Mode' => Session::has('mode') ? Session::get('mode') : false ,
-    		'Socials' => json_decode($Contact['socials'], true)
+    		'Socials' => json_decode($Contact['socials'], true),
+            'Random' => rand(0,2)
     	];
 
     	return view('main/index', $Data);

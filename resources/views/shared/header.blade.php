@@ -5,6 +5,11 @@
         <nav class="right hide-on-med-and-down">
             <ul>
                 <li class="active">
+                    <a href="{{ url('/') }}" class="hidden">
+                        home
+                    </a>
+                </li>
+                <li>
                     <a href="{{ url('works') }}" class="hidden">
                         works
                     </a>
@@ -28,6 +33,11 @@
             <button class="close"></button>
             <ul>
                 <li class="active">
+                    <a href="{{ url('/') }}" class="hidden">
+                        home
+                    </a>
+                </li>
+                <li>
                     <a href="{{ url('works') }}" class="hidden">
                         works
                     </a>
