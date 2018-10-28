@@ -21,6 +21,8 @@ Route::get('/about', 'AboutController@index');
 Route::get('/contact', 'ContactController@index');
 Route::get('/works/{slug?}', 'WorksController@index');
 Route::any('/home/changemode', 'HomeController@ChangeMode');
+Route::post('/works/getProject', 'WorksController@getProject');
+Route::post('/works/loadProjects', 'WorksController@loadProjects');
 
 
 

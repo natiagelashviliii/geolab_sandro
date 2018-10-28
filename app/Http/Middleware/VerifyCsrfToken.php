@@ -12,7 +12,9 @@ class VerifyCsrfToken extends Middleware
      * @var array
      */
     protected $except = [
-        'http://127.0.0.1:8000/admin/works/deletephoto',
-        'http://127.0.0.1:8000/home/changemode'
+        'http://geolabsandro.test/admin/works/deletephoto',
+        'http://geolabsandro.test/home/changemode',
+        'http://geolabsandro.test/works/getProject',
+        'http://geolabsandro.test/works/loadProjects'
     ];
 }

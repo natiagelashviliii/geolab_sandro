@@ -4,22 +4,22 @@
     <div class="container">
         <nav class="right hide-on-med-and-down">
             <ul>
-                <li class="active">
+                <li  {{ setActive('/') }}>
                     <a href="{{ url('/') }}" class="hidden">
                         home
                     </a>
                 </li>
-                <li>
+                <li {{ setActive('works',true) }}>
                     <a href="{{ url('works') }}" class="hidden">
                         works
                     </a>
                 </li>
-                <li>
+                <li {{ setActive('about') }}>
                     <a href="{{ url('about') }}" class="hidden">
                         about
                     </a>
                 </li>
-                <li>
+                <li {{ setActive('contact') }}>
                     <a href="{{ url('contact') }}" class="hidden">
                         contact
                     </a>
@@ -32,22 +32,22 @@
         <div class="responsive-menu">
             <button class="close"></button>
             <ul>
-                <li class="active">
+                <li {{ setActive('') }}>
                     <a href="{{ url('/') }}" class="hidden">
                         home
                     </a>
                 </li>
-                <li>
+                <li {{ setActive('works') }}>
                     <a href="{{ url('works') }}" class="hidden">
                         works
                     </a>
                 </li>
-                <li>
+                <li {{ setActive('about') }}>
                     <a href="{{ url('about') }}" class="hidden">
                         about
                     </a>
                 </li>
-                <li>
+                <li {{ setActive('contact') }}>
                     <a href="{{ url('contact') }}" class="hidden">
                         contact
                     </a>

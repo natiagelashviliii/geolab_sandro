@@ -43,7 +43,7 @@
         <div class="input-field col s12 right-align">
 	    	<input type="hidden" name="Tags" id="Tags" value="">
 	    	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	    	<button class="waves-effect waves-light btn-small" type="submit">Save</button>
+	    	<button class="waves-effect waves-light btn-small btn" type="submit">Save</button>
 	    </div>
 	</form>
 </div>        

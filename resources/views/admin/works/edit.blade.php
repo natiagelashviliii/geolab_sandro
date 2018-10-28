@@ -29,7 +29,7 @@
             </div>
         </div>
         <div class="input-field col s12 video-field @if($data['work']->video) {{ 'video-edit-field' }} @endif">
-			<input id="Video" name="Video" type="text" value="{{ $data['work']->video }}">
+			<input id="Video" name="Video" type="text" value="https://vimeo.com/{{ $data['work']->video }}">
 			<label class="active" for="Video">Insert video url here</label>
 		</div>
 		<div class="input-field col s12">
@@ -40,7 +40,7 @@
 	    	<input type="hidden" name="Tags" id="Tags" value="">
 	    	<input type="hidden" name="WorkID" value="{{ $data['work']->id }}">
 	    	<input type="hidden" name="_token" value="{{ csrf_token() }}">
-	    	<button class="waves-effect waves-light btn-small" type="submit">Save</button>
+	    	<button class="waves-effect waves-light btn-small btn" type="submit">Save</button>
 	    </div>
 	</form>
 </div>        
@@ -50,8 +50,9 @@
 @section('sub_footer')
 <script type="text/javascript">
 	$(document).ready(function(){
+		var usedChips = {!! $data['usedTags'] !!};
 		$('.chips-autocomplete').chips({
-			data: {!! $data['usedTags'] !!},
+			data: usedChips[0].tag ? usedChips : [],
 			autocompleteOptions: {
 			  data: {!! $data['tags'] !!},
 			  limit: 7,
@@ -69,6 +70,11 @@
 			$('#Tags').val(chipsArray);
 		}
 		generateChips();
+
+		$('.upload-file-btn').on('click', function() {
+			console.log('ok');
+			$('#Video').removeAttr('value');
+		});
 	});
 
 	var file = ("{{$data['work']->file}}").length;
@@ -85,29 +91,47 @@
 	        ],
 	        overwriteInitial: true,
 	        deleteUrl: '{{ url("admin/works/deletephoto/") }}',
+	        theme: 'fa',
+	        uploadUrl: "{!! url('admin/works/uploadImage') !!}",
+	        allowedFileExtensions: ['jpg', 'png', 'gif', 'mp4'],
+	        showUpload: false,
+	        showRemove: false,
+	        showClose: false,
+	        maxFileSize: 10000,
+			maxFileCount: 1,
+			showUploadedThumbs: true,
+	        fileActionSettings : {
+	        	showZoom: false,
+	        	showUpload: false,
+				showRemove: true,
+				showDrag: false,
+				indicatorNew: "",
+				indicatorSuccess: "",
+				indicatorError: ""
+			},
     	});
+    }   else {
+    	uploadFile.fileinput({
+			theme: 'fa',
+		    uploadUrl: "{!! url('admin/works/uploadImage') !!}",
+		    allowedFileExtensions: ['jpg', 'png', 'gif', 'mp4'],
+		    showUpload: false,
+		    showRemove: false,
+		    showClose: false,
+		    maxFileSize: 10000,
+			maxFileCount: 1,
+			showUploadedThumbs: true,
+		    fileActionSettings : {
+		    	showZoom: false,
+		    	showUpload: false,
+				showRemove: true,
+				showDrag: true,
+				indicatorNew: "",
+				indicatorSuccess: "",
+				indicatorError: ""
+			},
+		});
     }
-	uploadFile.fileinput({
-		
-    	theme: 'fa',
-        uploadUrl: "{!! url('admin/works/uploadImage') !!}",
-        allowedFileExtensions: ['jpg', 'png', 'gif', 'mp4'],
-        showUpload: false,
-        showRemove: false,
-        showClose: false,
-        maxFileSize: 10000,
-		maxFileCount: 1,
-		showUploadedThumbs: true,
-        fileActionSettings : {
-        	showZoom: false,
-        	showUpload: false,
-			showRemove: true,
-			showDrag: false,
-			indicatorNew: "",
-			indicatorSuccess: "",
-			indicatorError: ""
-		},
-    });
 
 
 </script>

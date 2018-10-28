@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Helper;
 use Illuminate\Http\Request;
 use App\Models\Tags;
 use App\Models\Works;
@@ -12,6 +13,7 @@ use \Illuminate\Support\Facades\Storage;
 
 class WorksController extends Controller
 {
+    
     /**
 	 * Create a new controller instance.
 	 *
@@ -48,7 +50,7 @@ class WorksController extends Controller
         foreach ($Works as $key => $value) {
             $Works->tags = Works::find($value->id)->tags()->pluck('name')->toArray();
             if ($value->video) {
-                $value->video_thumb = $this->GenerateVideoThumb($value->video);
+                $value->video_thumb = Helper::GenerateVideoThumb($value->video);
             }
         }
 
@@ -142,7 +144,8 @@ class WorksController extends Controller
         DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $ext]);
 
         if ($request->input('Video')) {
-            DB::table('works')->where('id', $workID)->update(['video' => $request->input('Video')]);
+            $video = Helper::GenerateVimeoEmbed($request->input('Video'));
+            DB::table('works')->where('id', $workID)->update(['video' => $video]);
         }
 
         return redirect()->route('admin.works.index');
@@ -162,7 +165,9 @@ class WorksController extends Controller
                 [
                     'title'       => $request->input('Title'),
                     'description' => $request->input('Description'),
-                    'cat_id'      => $request->input('CatID')
+                    'cat_id'      => $request->input('CatID'),
+                    'file'        => '',
+                    'video'       => ''
                 ]
             );
 
@@ -185,8 +190,12 @@ class WorksController extends Controller
             $fileNameToStore = $fileName . '_' . time() . '.' . $ext;
             $path = $request->file('File')->storeAs('public/works', $fileNameToStore);
 
+            DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $ext]);
+
+        } else if($request->input('Video')) {
+            $video = Helper::GenerateVimeoEmbed($request->input('Video'));
+            DB::table('works')->where('id', $workID)->update(['video' => $video]);
         }
-        DB::table('works')->where('id', $workID)->update(['file' => $fileNameToStore, 'extension' => $ext]);
 
         return redirect()->route('admin.works.index');
 
@@ -247,24 +256,6 @@ class WorksController extends Controller
                 );
             }
         }
-    }
-
-    private function GenerateVideoThumb($video_url) {
-        $oembed_endpoint = 'http://vimeo.com/api/oembed';
-        $xml_url = $oembed_endpoint . '.xml?url=' . rawurlencode($video_url) . '&width=640';
-        function curl_get($url) {
-            $curl = curl_init($url);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($curl, CURLOPT_TIMEOUT, 30);
-            curl_setopt($curl, CURLOPT_FOLLOWLOCATION, 1);
-            $return = curl_exec($curl);
-            curl_close($curl);
-            return $return;
-        }
-        
-        $oembed = simplexml_load_string(curl_get($xml_url));
-
-        return $oembed->thumbnail_url;
     }
 
 }
