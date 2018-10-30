@@ -195,6 +195,7 @@ var projects = {
     offset: 0,
     loadTime: false,
     slug: null,
+    project: null,
 
     show: function(id){
         $.post('/works/getProject', {'id': id}, function(resp){
@@ -231,6 +232,59 @@ var projects = {
 
     removeLoad: function(){
         $('.spinner').remove();
+    },
+
+    next: function(obj) {
+
+        var workID = $(obj).data('id');
+
+        if (workID) {
+            popup.swipeLeft();
+            setTimeout(function(){
+                $.post('/works/getProjectContent', {'id': workID}, function(resp){
+                    if (resp) {
+                        $('.project-popup-container').append(resp);
+                        $('.popup-inside:not(.current)').addClass('new next');
+                        projects.initialArrows(workID);
+                        popup.show();
+                    }            
+                });
+
+            },500);
+        }
+
+        return false;
+    },
+
+    previous: function(obj){
+
+        var workID = $(obj).data('id');
+
+        if (workID) {
+            popup.swipeRight();
+            setTimeout(function(){
+                $.post('/works/getProjectContent', {'id': workID}, function(resp){
+                    if (resp) {
+                        $('.project-popup-container').append(resp);
+                        $('.popup-inside:not(.current)').addClass('new previous');
+                        projects.initialArrows(workID);
+                        popup.show();
+                    }            
+                });
+            },500);
+        }
+
+        return false;
+    },
+
+    initialArrows: function(workID){
+        $.post('/works/getSiblingProjects', {'id': workID}, function(resp){
+            if (resp) {
+                data = JSON.parse(resp);
+                $('.arrow.left').data('id', data.previous);
+                $('.arrow.right').data('id', data.next);
+            }            
+        });
     }
 }
 
@@ -245,10 +299,48 @@ var popup = {
 
     open: function() {
         $('.popup-content').addClass('active');
+        $('.popup-inside').addClass('current');
         popup.init();
     },
 
     close: function() {
         $('.popup-content').removeClass('active');
+    },
+
+    swipeLeft: function(){
+        $('.popup-inside.current').animate({  opacity: 0 }, {
+            step: function(now,fx) { $(this).css('transform','translateX(-120%)'); }, 
+            duration: 'slow',
+            complete: function() {
+              $(this).remove();
+              // popup.show();
+            }
+        }, 'linear');
+
+    },
+
+    swipeRight: function(){
+        $('.popup-inside.current').animate({  opacity: 0 }, {
+        step: function(now,fx) {
+          $(this).css('transform','translateX(120%)');  
+        }, 
+        duration: 'slow',
+        complete: function() {
+          $(this).remove();
+          // popup.show();
+        }
+        }, 'linear');
+    },
+
+    show: function(){
+        $('.popup-inside.new').animate({ opacity: 1 }, {
+            step: function(now,fx) {
+              $(this).css('transform','translateX(0)');  
+            },
+            duration:'slow',
+            complete: function(){
+                $(this).removeClass('new next previous').addClass('current');
+            }
+        },'linear');
     }
 }

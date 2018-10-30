@@ -23,6 +23,8 @@ Route::get('/works/{slug?}', 'WorksController@index');
 Route::any('/home/changemode', 'HomeController@ChangeMode');
 Route::post('/works/getProject', 'WorksController@getProject');
 Route::post('/works/loadProjects', 'WorksController@loadProjects');
+Route::post('/works/getProjectContent', 'WorksController@getProjectContent');
+Route::post('/works/getSiblingProjects', 'WorksController@getSiblingProjects');
 
 
 

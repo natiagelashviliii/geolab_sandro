@@ -55,6 +55,14 @@
     	right: 5px;
     	bottom: 5px;
 	}
+	.popup-inside.new.next{
+		opacity: 1;
+		transform: translateX(150%);
+	}
+	.popup-inside.new.previous{
+		opacity: 1;
+		transform: translateX(-150%);
+	}
 </style>
 
 <section class="container wokrs-container">

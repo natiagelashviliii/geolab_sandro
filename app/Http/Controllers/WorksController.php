@@ -87,10 +87,8 @@ class WorksController extends Controller
         }
     }
 
-    public function getProject(Request $request){
-
-        $workId = $request->input('id');
-
+    public function getProjectData($workId){
+        
         $work = Works::where('id', $workId)->first();
 
         if ($work->video) {
@@ -99,12 +97,53 @@ class WorksController extends Controller
         
         $tags = Works::find($workId)->tags()->pluck('name')->toArray();
 
+        $previous = Works::where('id', '>', $work->id)->min('id');
+        $next = Works::where('id', '<', $work->id)->max('id');
+
         $data = [
             'work' => $work,
-            'tags' => $tags
+            'tags' => $tags,
+            'previous' => $previous,
+            'next' => $next
         ];
+
+        return $data;
+    }
+
+    public function getProject(Request $request){
+
+        $workId = $request->input('id');
+
+        if ($workId) {
+            $data = $this->getProjectData($workId);
+        }
         
         return view('shared.popup', $data);
+    }
+
+    public function getProjectContent(Request $request){
+
+        $workId = $request->input('id');
+
+        if ($workId) {
+            $data = $this->getProjectData($workId);
+        }
+
+        return view('works.inc.popup-content', $data);
+    }
+
+    public function getSiblingProjects(Request $request){
+        $workId = $request->input('id');
+
+        $previous = Works::where('id', '>', $workId)->min('id');
+        $next     = Works::where('id', '<', $workId)->max('id');
+
+        $data = [
+            'previous' => $previous,
+            'next' => $next
+        ];
+
+        return json_encode($data);
     }
 
     public function loadProjects(Request $request) {
