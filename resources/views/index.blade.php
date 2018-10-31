@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/plugins/materialize.min.css') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/plugins/font-awesome.min.css') }}">
-    @if (!Request::is('admin/*') && !Request::is('admin'))
+    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login'))
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/owl.carousel.min.css') }}"> 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/owl.theme.default.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/simplelightbox.min.css') }}">

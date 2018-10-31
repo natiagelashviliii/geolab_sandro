@@ -34,7 +34,7 @@
                 @endif
             </div>
             <div class="col s12 right-align">
-                <button class="waves-effect waves-light btn-small" type="submit">Login</button>
+                <button class="waves-effect waves-light btn-small btn" type="submit">Login</button>
                 <blockquote>
                     <a href="{{ route('password.request') }}">Forgot Your Password?</a>
                 </blockquote>
