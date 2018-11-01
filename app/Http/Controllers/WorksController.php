@@ -29,13 +29,12 @@ class WorksController extends Controller
     	if ($this->filter) {
             $Works = $this->getFilteredWorks();
             $slugID = DB::table('categories')->where('title', $this->filter)->first()->id;
-            // if (!$slugID) {
-            //     abort(404);
-            // }
+            if (!$slugID) {
+                abort(404);
+            }
     	} else {
     		$Works = $this->getWorks();
         }
-
         
     	$Contact    = Contact::where('id', 1)->first();
     	$Categories = DB::table('categories')->where('status', '1')->get();
@@ -50,6 +49,26 @@ class WorksController extends Controller
 
     	return view('works/index', $Data);
 
+    }
+
+    public function explore($tag = null) {
+        $tagId = DB::table('tags')->where('name', $tag)->first()->id;
+
+        if (!$tagId) {
+            abort('404');
+        }
+
+        $Contact    = Contact::where('id', 1)->first();
+        $Categories = DB::table('categories')->where('status', '1')->get();
+
+        $Data = [
+            'Mode'       => Session::has('mode') ? Session::get('mode') : false ,
+            'Socials'    => json_decode($Contact['socials'], true),
+            'Categories' => $Categories,
+            'tag'        => $tag
+        ];
+
+        return view('works/explore', $Data);
     }
 
     private function getWorks(){
@@ -76,38 +95,6 @@ class WorksController extends Controller
         $this->generateTags($Works);
 
         return $Works;
-    }
-
-    private function generateTags($Works){
-        foreach ($Works as $key => $value) {
-            $Works->tags = Works::find($value->id)->tags()->pluck('name')->toArray();
-            if ($value->video) {
-                $value->video_thumb = Helper::GenerateVideoThumb($value->video);
-            }
-        }
-    }
-
-    public function getProjectData($workId){
-        
-        $work = Works::where('id', $workId)->first();
-
-        if ($work->video) {
-            $work->video_embed = Helper::GenerateVideoEmbed($work->video);
-        }
-        
-        $tags = Works::find($workId)->tags()->pluck('name')->toArray();
-
-        $previous = Works::where('id', '>', $work->id)->min('id');
-        $next = Works::where('id', '<', $work->id)->max('id');
-
-        $data = [
-            'work' => $work,
-            'tags' => $tags,
-            'previous' => $previous,
-            'next' => $next
-        ];
-
-        return $data;
     }
 
     public function getProject(Request $request){
@@ -162,4 +149,43 @@ class WorksController extends Controller
 
         return view('works/works', $Data);
     }
+
+
+    //help functions
+
+    public function getProjectData($workId){
+        
+        $work = Works::where('id', $workId)->first();
+
+        if ($work->video) {
+            $work->video_embed = Helper::GenerateVideoEmbed($work->video);
+        }
+        
+        $tags = Works::find($workId)->tags()->pluck('name')->toArray();
+
+        $previous = Works::where('id', '>', $work->id)->min('id');
+        $next = Works::where('id', '<', $work->id)->max('id');
+
+        $data = [
+            'work' => $work,
+            'tags' => $tags,
+            'previous' => $previous,
+            'next' => $next
+        ];
+
+        return $data;
+    }
+
+    private function generateTags($Works){
+        foreach ($Works as $key => $value) {
+            $Works->tags = Works::find($value->id)->tags()->pluck('name')->toArray();
+            if ($value->video) {
+                $value->video_thumb = Helper::GenerateVideoThumb($value->video);
+            }
+        }
+    }
+
+    // private function getWorksByTags() {
+        
+    // }
 }

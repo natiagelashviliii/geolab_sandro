@@ -5,6 +5,7 @@
 <!-- footer start -->
 
 <footer>
+    @if (!Request::is('works'))
     <div class="socials container right-align hidden">
         <ul>
             @foreach (config('constants.socials') as $SocKey => $Soc)
@@ -16,18 +17,9 @@
                     </li>
                 @endif
             @endforeach
-            <!-- <li>
-                <a href="">
-                    instagram
-                </a>
-            </li>
-            <li>
-                <a href="">
-                    youtube
-                </a>
-            </li> -->
         </ul>
     </div>
+    @endif
 </footer>
 
 <!-- footer end -->

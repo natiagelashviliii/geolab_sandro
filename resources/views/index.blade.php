@@ -9,21 +9,22 @@
     <link rel="stylesheet" href="{{ asset('css/plugins/materialize.min.css') }}">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('css/plugins/font-awesome.min.css') }}">
-    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login'))
+    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login') && !Request::is('password/*'))
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/owl.carousel.min.css') }}"> 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/owl.theme.default.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/simplelightbox.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">   
     @endif
     @yield('header')
+    <script src='https://www.google.com/recaptcha/api.js'></script>
     </head>
-    @if ((!Request::is('admin/*') && !Request::is('admin') && !Request::is('login')) && ($Mode == 'black'))
+    @if ((!Request::is('admin/*') && !Request::is('admin') && !Request::is('login')) && !Request::is('password/*') && ($Mode == 'black'))
     <body class="night-mode">
     @else
     <body>
     @endif
 
-    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login'))
+    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login') && !Request::is('password/*'))
         @include('shared.header')
     @endif
 
@@ -33,7 +34,7 @@
 
     <!-- content end -->
 
-    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login'))
+    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login') && !Request::is('password/*'))
         @include('shared.footer')
     @endif
 

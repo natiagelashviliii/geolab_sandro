@@ -33,6 +33,9 @@
                     </span>
                 @endif
             </div>
+            <div class="input-field col s12 captcha-input-field">
+                <div class="g-recaptcha" data-sitekey="6Lc_FHgUAAAAABw7Ts4UHTa1gCxfg-uXXllr5XVh"></div>
+            </div>
             <div class="col s12 right-align">
                 <button class="waves-effect waves-light btn-small btn" type="submit">Login</button>
                 <blockquote>

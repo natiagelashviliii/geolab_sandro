@@ -92,6 +92,16 @@ label{
 	left: unset;
 	right: 0;
 }
+.admin-menu li a:hover{
+  color: #26a69a;
+  transition: .2s;
+}
+.admin-bottom-menu{
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
 .admin-main{
 	min-height: 100vh!important;
   background: #fbfbfb;
@@ -335,6 +345,19 @@ label{
   display: block;
 }
 
+.password-error-messages{
+  color: #bf2424;
+  font-size: 12px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+}
+.password-error-messages i{
+  margin-right: 10px;
+}
+.password-error-messages.success{
+  color: #17901b;
+}
 @media only screen and (max-width: 1200px){
 	.admin-header{
 		width: 25%;
@@ -349,7 +372,7 @@ label{
     transform: translateX(calc(-100% + 25px));
     transition: 0.5s;
   }
-  .admin-header ul{
+  .admin-header ul:not(.admin-bottom-menu){
     margin-top: 0;
     position: absolute;
     top: 50%;
@@ -469,3 +492,4 @@ label{
 #popup_message input[type=text], #popup_message select {
   margin-top:15px;
   width:100%;
+}

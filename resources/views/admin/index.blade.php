@@ -10,11 +10,14 @@
 
 <section class="row">
     <header class="admin-header">
-        <!-- <p class="logo">Admin Panel</p> -->
         <ul class="admin-menu">
-            <li><a @if(Request::is('admin/works')) class="active-link" @endif href="{{ url('admin/works') }}">Works</a></li>
             <li><a @if(Request::is('admin/about')) class="active-link" @endif href="{{ url('admin/about') }}">About</a></li>
+            <li><a @if(Request::is('admin/works')) class="active-link" @endif href="{{ url('admin/works') }}">Works</a></li>
             <li><a @if(Request::is('admin/contact')) class="active-link" @endif href="{{ url('admin/contact') }}">Contact</a></li>
+        </ul>
+        <ul class="admin-menu admin-bottom-menu">
+            <li><a @if(Request::is('admin/user')) class="active-link" @endif href="{{ url('admin/user') }}">User</a></li>
+            <li><a href="{{ url('/logout') }}">Logout</a></li>
         </ul>
         <button class="resp-menu-btn"><i class="large material-icons">more_vert</i></button>
     </header>

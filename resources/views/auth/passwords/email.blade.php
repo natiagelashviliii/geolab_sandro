@@ -24,7 +24,7 @@
                 @endif
             </div>
             <div class="col s12 right-align">
-                <button class="waves-effect waves-light btn-small" type="submit">{{ __('Send Password Reset Link') }}</button>
+                <button class="waves-effect waves-light btn-small btn" type="submit">{{ __('Send Password Reset Link') }}</button>
             </div>
         </div>
     </form>

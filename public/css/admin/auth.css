@@ -67,3 +67,6 @@ blockquote a{
     display: inline-block;
     border-bottom: 1px solid #8c8c8c;
 }
+.captcha-input-field{
+    margin-bottom: 10px;
+}

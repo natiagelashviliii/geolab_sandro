@@ -46,24 +46,6 @@ class AboutController extends Controller
             ]
         );
 
-        //update file
-        
-        $HasPhoto = 0;
-        if ($request->hasFile('File')) {
-            $HasPhoto ++;
-            $fileNameWithExt = $request->file('File')->getClientOriginalName();
-            $fileName = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
-            $Ext = $request->file('File')->getClientOriginalExtension();
-            $fileNameToStore = $fileName . '_' . time() . '.' . $Ext;
-            $path = $request->file('File')->storeAs('public/about', $fileNameToStore);
-
-            About::where('id', 1)->update(['image' => $fileNameToStore]);
-        }
-
-        if (!is_null($HasPhoto)) {
-            About::increment('photo_ver');    
-        }
-
     	return redirect()->route('admin.about.index');
     }
 

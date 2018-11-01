@@ -17,20 +17,26 @@
 
 Route::get('/', 'HomeController@index');
 Route::get('/home', 'HomeController@index');
+Route::any('/home/changemode', 'HomeController@ChangeMode');
 Route::get('/about', 'AboutController@index');
 Route::get('/contact', 'ContactController@index');
+
+
 Route::get('/works/{slug?}', 'WorksController@index');
-Route::any('/home/changemode', 'HomeController@ChangeMode');
+Route::get('/works/explore/{tag}', 'WorksController@explore');
 Route::post('/works/getProject', 'WorksController@getProject');
 Route::post('/works/loadProjects', 'WorksController@loadProjects');
 Route::post('/works/getProjectContent', 'WorksController@getProjectContent');
 Route::post('/works/getSiblingProjects', 'WorksController@getSiblingProjects');
 
 
+Route::get('404', ['uses' => 'ErrorController@index', 'as' => 'errors.404']);
+
 
 // Admin routes
 
 Auth::routes();
+Route::get('/logout', 'Auth\LoginController@logout')->name('logout' );
 
 Route::prefix('admin')->group(function(){
 
@@ -40,6 +46,13 @@ Route::prefix('admin')->group(function(){
     Route::group(['prefix' => 'about'], function() {
         Route::get('/', ['uses' => 'Admin\AboutController@index', 'as' => 'admin.about.index']);
         Route::post('/edit', 'Admin\AboutController@EditAbout');
+    });
+
+    /* user routes */
+    Route::group(['prefix' => 'user'], function() {
+        Route::get('/', ['uses' => 'Admin\UserController@index', 'as' => 'admin.user.index']);
+        Route::post('/edit', 'Admin\UserController@edit');
+        Route::post('/changePassword', 'Admin\UserController@changePassword');
     });
 
     /* contact routes */
