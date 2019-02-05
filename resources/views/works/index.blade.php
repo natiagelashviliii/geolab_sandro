@@ -63,13 +63,18 @@
 		opacity: 1;
 		transform: translateX(-150%);
 	}
+	@media only screen and (max-width: 600px) {
+		.video-mobile-hidden{
+			display: none;
+		}
+	}
 </style>
 
 <section class="container wokrs-container">
 	<div class="works-content">
 		<div id="filter-menu" class="tabs-head hidden">
 			@foreach ($Categories as $key => $value)
-				<a href="{{ '/works/' . str_slug($value->title,'-') }}" class="{{ $slugID == $value->id ? 'active' : ''}}" data-slug="{{ str_slug($value->title,'-') }}">
+				<a href="{{ '/works/' . str_slug($value->title,'-') }}" class="{{ $slugID == $value->id ? 'active' : ''}}" data-slug="{{ str_slug($value->title,'-') }}" data-aos="fade-up" data-aos-delay="10" data-aos-duration="1000" data-aos-offset="10">
 					{{ $value->title }}
 				</a>
 			@endforeach

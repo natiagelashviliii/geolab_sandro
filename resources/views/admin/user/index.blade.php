@@ -27,15 +27,15 @@
 		</div>
 		@endif
 		<div class="input-field col s12">
-			<input id="Old_Password" name="OldPassword" type="text" data-error="*">
+			<input id="Old_Password" name="OldPassword" type="password" data-error="*">
 			<label class="active" for="Old_Password">Old Password</label>
 		</div>
 		<div class="input-field col s12">
-			<input id="New_Password" name="NewPassword" type="text" data-error="*">
+			<input id="New_Password" name="NewPassword" type="password" data-error="*">
 			<label class="active" for="New_Password">New Password</label>
 		</div>
 		<div class="input-field col s12">
-			<input id="Repeat_Password" name="RepeatPassword" type="text" data-error="*">
+			<input id="Repeat_Password" name="RepeatPassword" type="password" data-error="*">
 			<label class="active" for="Repeat_Password">Repeat Password</label>
 		</div>
 	    <div class="input-field col s12 right-align">

@@ -77,6 +77,13 @@ class WorksController extends Controller
                         ->orderBy('works.id', 'desc')->offset($this->offset)->limit($this->limit)->get();
         $Works->toArray();
 
+        foreach ($Works as $key => $value) {
+            if ($value->video) {
+                $value->video_embed = Helper::GenerateVideoEmbed($value->video);
+            }
+        }
+
+
         $this->generateTags($Works);
 
         return $Works;
@@ -100,8 +107,9 @@ class WorksController extends Controller
     public function getProject(Request $request){
 
         $workId = $request->input('id');
-
-        if ($workId) {
+        if ($request->input('slugId') != 0) {
+            $data = $this->getProjectData($workId, $request->input('slugId'));
+        } else {
             $data = $this->getProjectData($workId);
         }
         
@@ -112,7 +120,9 @@ class WorksController extends Controller
 
         $workId = $request->input('id');
 
-        if ($workId) {
+        if ($request->input('slugId') != 0) {
+            $data = $this->getProjectData($workId, $request->input('slugId'));
+        } else {
             $data = $this->getProjectData($workId);
         }
 
@@ -122,8 +132,14 @@ class WorksController extends Controller
     public function getSiblingProjects(Request $request){
         $workId = $request->input('id');
 
-        $previous = Works::where('id', '>', $workId)->min('id');
-        $next     = Works::where('id', '<', $workId)->max('id');
+        if ($request->input('slugId') != 0) {
+            $previous = Works::where('id', '>', $workId)->where('status', '=', '1')->where('cat_id', '=', $slugId)->min('id');
+            $next = Works::where('id', '<', $workId)->where('status', '=', '1')->where('cat_id', '=', $slugId)->max('id');
+
+        } else {
+            $previous = Works::where('id', '>', $workId)->where('status', '=', '1')->min('id');
+            $next = Works::where('id', '<', $workId)->where('status', '=', '1')->max('id');
+        }
 
         $data = [
             'previous' => $previous,
@@ -153,7 +169,7 @@ class WorksController extends Controller
 
     //help functions
 
-    public function getProjectData($workId){
+    public function getProjectData($workId, $slugId = null){
         
         $work = Works::where('id', $workId)->first();
 
@@ -163,14 +179,22 @@ class WorksController extends Controller
         
         $tags = Works::find($workId)->tags()->pluck('name')->toArray();
 
-        $previous = Works::where('id', '>', $work->id)->min('id');
-        $next = Works::where('id', '<', $work->id)->max('id');
+        if ($slugId) {
+            $previous = Works::where('id', '>', $work->id)->where('status', '=', '1')->where('cat_id', '=', $slugId)->min('id');
+            $next = Works::where('id', '<', $work->id)->where('status', '=', '1')->where('cat_id', '=', $slugId)->max('id');
+
+        } else {
+            $previous = Works::where('id', '>', $work->id)->where('status', '=', '1')->min('id');
+            $next = Works::where('id', '<', $work->id)->where('status', '=', '1')->max('id');
+        }
+        
 
         $data = [
             'work' => $work,
             'tags' => $tags,
             'previous' => $previous,
-            'next' => $next
+            'next' => $next,
+            'slugId' => $slugId ? $slugId : false ,
         ];
 
         return $data;

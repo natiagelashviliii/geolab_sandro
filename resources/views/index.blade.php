@@ -13,7 +13,8 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/owl.carousel.min.css') }}"> 
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/owl.theme.default.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/simplelightbox.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/style.css') }}">   
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/plugins/aos.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}?v=1.1">   
     @endif
     @yield('header')
     <script src='https://www.google.com/recaptcha/api.js'></script>
@@ -34,7 +35,7 @@
 
     <!-- content end -->
 
-    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login') && !Request::is('password/*'))
+    @if (!Request::is('admin/*') && !Request::is('admin') && !Request::is('login') && !Request::is('password/*') && !Request::is('works/*'))
         @include('shared.footer')
     @endif
 
@@ -43,7 +44,8 @@
     <script src="{{ asset('js/plugins/materialize.min.js') }}"></script>
     <script src="{{ asset('js/plugins/owl.carousel.min.js') }}"></script>
     <script src="{{ asset('js/plugins/simple-lightbox.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/aos.js') }}"></script>
     @yield('footer')
-    <script src="{{ asset('js/script.js') }}"></script>
+    <script src="{{ asset('js/script.js') }}?v=1.1"></script>
     </body>
 </html>

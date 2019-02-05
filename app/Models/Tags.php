@@ -12,6 +12,6 @@ class Tags extends Model
 
     public function works()
     {
-        return $this->belongsToMany('App\Models\works', 'work_tags', 'work_id', 'tag_id');
+        return $this->belongsToMany('App\Models\Works', 'work_tags', 'work_id', 'tag_id');
     }
 }
